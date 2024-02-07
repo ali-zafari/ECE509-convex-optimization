@@ -1,0 +1,98 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum} % For placeholder text, you can remove this in your actual document.
+
+\usepackage[headings]{fullpage} % Set margins and place page numbers at bottom center
+\usepackage[shortlabels]{enumitem} % Use a. in the enumerate
+\usepackage{amsmath} % aligned equations
+\usepackage{graphicx} % include figure
+\usepackage{float} % usage of H for figure float
+\usepackage{amssymb} % \blacksqure
+\usepackage{xhfill} % fill horizontal line
+\usepackage{sectsty} % section coloring
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{bbm}
+
+\onehalfspacing
+\subsectionfont{\color{blue}}  % sets colour of sections
+
+\pagestyle{fancy}
+\fancyhf{} % Clear header and footer fields
+\renewcommand{\headrulewidth}{0.4pt} % Horizontal line under the header
+\setlength{\headheight}{18pt}
+
+\fancyhead[L]{\large Convex Optimization \scriptsize Spring 2024}
+\fancyhead[C]{HW 1}
+\fancyhead[R]{\large Ali Zafari - 233001580} % Page number on the right side
+\fancyfoot[R]{\thepage}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\Real}{\mathcal{Re}}
+\newcommand{\poly}{\mathcal{P}}
+\newcommand{\mat}{\mathcal{M}}
+\renewcommand{\L}{L}
+\newcommand{\U}{U}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\Hom}{\mathcal{L}}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\Range}{range}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\restr}[1]{|_{#1}}
+\renewcommand{\inf}{\mathop{\mathrm{inf}\vphantom{\mathrm{sup}}}}
+
+\begin{document}
+
+\subsection*{Problem 1.2 \small Device Sizing.} 
+\begin{enumerate}[(a)]
+    \item False. Design B is violating the constraint (by having total area greater than 50), therefore it can not be considered as a solution of the problem.
+
+    \item False. Both designs A and C are satisfying the constraint of the problem and offer the same value for the objective function (power consumption), therefore none of them is preferrable over the other.
+
+    \item True. Design A is offering smaller value for the objective function (power) than design D and still satisfying the area constraint, therefore design D cannot be optimal.
+\end{enumerate}
+\hrule
+
+\subsection*{Problem 12.1 \small Some famous inequalities.}
+\begin{enumerate}[(a)]
+    \item Let $a=(a_1,\dots,a_n)^T, b=(b_1,\dots,b_n)^T\in\R^n$, and nonnegative function $g$ be defined as $g(t)=\|a+tb\|_2^2$ where $t\in\R$.\\\\
+    To find where the minimum of $g$ occurs:
+    \begin{align*}
+        \frac{d}{dt}g(t)=0\rightarrow\frac{d}{dt}[(a_1+tb_1)^2+\dots+(a_n+tb_n)^2]=0\rightarrow2b^T(a+tb)=0\rightarrow t=-\frac{b^T a}{b^T b}
+    \end{align*}
+    Using the minimum value of $g$:
+    \begin{align*}
+        0{\color{brown}\leq} \min_t g(t)&=g(-\frac{b^T a}{b^T b})=\|a-\frac{b^T a}{b^T b}b\|_2^2\\
+        &=\langle a-\frac{b^T a}{b^T b}b, a-\frac{b^T a}{b^T b}b\rangle\\
+        &=\langle a,a\rangle -\frac{b^T a}{b^T b}\langle a,b\rangle -\frac{b^T a}{b^T b} \langle b,a\rangle + \left(\frac{b^T a}{b^T b}\right)^2\langle b,b\rangle\\
+        &=a^Ta -\frac{(b^T a)^2}{b^T b} -\frac{(b^T a)^2}{b^T b}  + \frac{(b^T a)^2}{b^T b}\\
+        &=a^Ta -\frac{(b^T a)^2}{b^T b}\\
+        &=\|a\|^2_2-\frac{(b^T a)^2}{\|b\|^2_2},
+    \end{align*}
+    therefore we have $|b^Ta|{\color{brown}\leq} \|a\|_2\|b\|_2$.
+    \item Given $x=(x_1,\dots,x_n)^T\in\R^n$, let $\mathbbm{1}=(1,\dots,1)^T\in\R^n$ and $y=(|x_1|,\dots, |x_n|)^T$. Using Cauchy-Schwarz inequality:
+    \begin{align*}
+        |y^T\mathbbm{1}|&\leq\|y\|_2\|\mathbbm{1}\|_2\\
+        \underbrace{\sum_{k=1}^n|x_k|}_{\|x\|_1}&\leq(\|x\|_2)(\sqrt{n})
+    \end{align*}
+
+    \item Given $x=(x_1,\dots,x_n)^T\in\R^n_{++}$, let $y=\frac{1}{\sqrt{n}}(\sqrt{x_1},\dots,\sqrt{x_n})^T$ and $z=\frac{1}{\sqrt{n}}(\sqrt{1/x_1},\dots,\sqrt{1/x_n})^T$. Using Cauchy-Schwarz inequality:
+    \begin{align*}
+        |y^Tz|&\leq\|y\|_2\|z\|_2\\
+        1&\leq (\sqrt{\frac{1}{n}\sum_{k=1}^nx_k})(\sqrt{\frac{1}{n}\sum_{k=1}^n\frac{1}{x_k}})\\
+        1^2&\leq (\frac{1}{n}\sum_{k=1}^nx_k)(\frac{1}{n}\sum_{k=1}^n\frac{1}{x_k})\\
+        (\frac{1}{n}\sum_{k=1}^n\frac{1}{x_k})^{-1}&\leq (\frac{1}{n}\sum_{k=1}^nx_k)
+    \end{align*}
+    
+\end{enumerate}
+\end{document}
