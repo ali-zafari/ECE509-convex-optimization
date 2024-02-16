@@ -1,0 +1,156 @@
+\documentclass[12pt, letterpaper, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum} % For placeholder text, you can remove this in your actual document.
+
+\usepackage[headings]{fullpage} % Set margins and place page numbers at bottom center
+\usepackage[shortlabels]{enumitem} % Use a. in the enumerate
+\usepackage{amsmath} % aligned equations
+\usepackage{graphicx} % include figure
+\usepackage{float} % usage of H for figure float
+\usepackage{amssymb} % \blacksqure
+\usepackage{xhfill} % fill horizontal line
+\usepackage{sectsty} % section coloring
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{bbm}
+
+\onehalfspacing
+\subsectionfont{\color{blue}}  % sets colour of sections
+
+\pagestyle{fancy}
+\fancyhf{} % Clear header and footer fields
+\renewcommand{\headrulewidth}{2pt} % Horizontal line under the header
+\setlength{\headheight}{18pt}
+
+\fancyhead[L]{\large Convex Optimization \scriptsize Spring 2024}
+\fancyhead[C]{HW\#2}
+\fancyhead[R]{\large Ali Zafari - 233001580} % Page number on the right side
+\fancyfoot[R]{\thepage}
+
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\Real}{\mathcal{Re}}
+\newcommand{\poly}{\mathcal{P}}
+\newcommand{\mat}{\mathcal{M}}
+\renewcommand{\L}{L}
+\newcommand{\U}{U}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\Hom}{\mathcal{L}}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\Range}{range}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\restr}[1]{|_{#1}}
+\renewcommand{\inf}{\mathop{\mathrm{inf}\vphantom{\mathrm{sup}}}}
+
+\begin{document}
+
+\subsection*{Problem 1}
+Let $\alpha\in\R$ and $x_1, x_2, \dots$ be a convergent sequence in the sublevel set $S_{\alpha}=\{x\in\mathrm{dom}f\mid f(x)\leq\alpha\}$, such that $\lim_{i\rightarrow\infty} x_i=x$.\\
+The sublevel set is closed if $x\in s_{\alpha}$. To show that, two conditions should be satisfied:
+\begin{enumerate}
+
+    \item \underline{$x\in\mathrm{dom} f$}
+    
+    Since $\mathrm{dom}f$ is a closed set, the limit point of any convergent sequence in it, is a member of it, \emph{i.e.}, $x\in\mathrm{dom} f$.
+    
+    \item \underline{$f(x)\leq\alpha$}
+    
+    Since we showed $x\in\mathrm{dom}f$:
+    \begin{align*}
+        \forall x_i \quad f(x_i)\leq\alpha\Rightarrow \lim_{i\rightarrow\infty}f(x_i)\leq\lim_{i\rightarrow\infty}\alpha\xRightarrow[x\in\mathrm{dom}f]{\text{continuous } f,}f(\lim_{i\rightarrow\infty} x_i)\leq\alpha\Rightarrow f(x)\leq\alpha
+    \end{align*}
+    
+\end{enumerate}
+as $\alpha$ was chosen arbitrarily, any sublevel set of $f$ is a closed set, so $f$ is a closed function.\\
+% \hrule
+\clearpage
+
+
+\subsection*{Problem 2}
+\underline{$f$ continuous, $\mathrm{dom}f$ open}
+\begin{itemize}[label={}]
+    \item {\color{cyan}\fbox{$\Rightarrow$}} \underline{$\{x_i\}\in\mathrm{dom}f, \lim_{i\rightarrow\infty}x_i=x\in\mathrm{bd}\,\mathrm{dom}f, \lim_{i\rightarrow\infty}f(x_i)=\infty$  $\Rightarrow$ $f$ closed}\\
+
+    Let $\alpha\in\R$ and $x_1, x_2, \dots$ be a convergent sequence in the sublevel set $S_{\alpha}=\{x\in\mathrm{dom}f\mid f(x)\leq\alpha\}$ such that $\lim_{i\rightarrow\infty} x_i=x$.
+    The sublevel set is closed if $x\in S_{\alpha}$. To show that, two conditions should be satisfied:\\
+    The limit point of the sequence ($x$) can exist in only two cases:
+    \begin{enumerate}
+        \item $x\in\mathrm{int}\,\mathrm{dom}f$\\
+        By hypothesis $\mathrm{int}\,\mathrm{dom}f=\mathrm{dom}f$, so $x\in\mathrm{dom}f$. Then by continuity of $f$ we have $\lim_{i\rightarrow\infty}f(x_i)\leq\lim_{i\rightarrow\infty}\alpha\Rightarrow
+         f(\lim_{i\rightarrow\infty} x_i)\leq\alpha\Rightarrow f(x)\leq\alpha$. Therefore $f$ is closed in this case.
+        
+        \item $x\in\mathrm{bd}\,\mathrm{dom}f$\\
+        In this case, if $\lim_{i\rightarrow\infty}f(x_i)\neq\infty$, it contradicts with $\mathrm{dom}f$ being open.
+    \end{enumerate}
+    Therefore, $f$ is closed, with the hypothesis.
+
+    \item {\color{cyan}\fbox{$\Leftarrow$}} \underline{$f$ closed $\Rightarrow$ $\{x_i\}\in\mathrm{dom}f, \lim_{i\rightarrow\infty}x_i=x\in\mathrm{bd}\,\mathrm{dom}f, \lim_{i\rightarrow\infty}f(x_i)=\infty$}\\
+    
+    (proof by contradiction) Suppose $x_1, x_2, \dots$ be a convergent sequence in the $\mathrm{dom}f$ with the limit point $\lim_{i\rightarrow\infty}x_i=x\in\mathrm{bd}\,\mathrm{dom}f$ such that $\lim_{i\rightarrow\infty} f(x_i)=B<\infty$.
+    Then considering the sublevel set $S_B=\{x\in\mathrm{dom}f\mid f(x)\leq B\}$, since the function is closed, $x\in S_B$. By definition of $S_B$, then, $x\in\mathrm{dom}f$ as well. This is in contradiction with $\mathrm{dom}f$ being an open function since we assumed $x$ to be on the boundary of $\mathrm{dom}f$. Therefore $\lim_{i\rightarrow\infty} f(x_i)$ cannot be less than $\infty$. 
+    
+\end{itemize}
+% \hrule
+\clearpage
+
+\subsection*{Problem 3 \small[BV 2.1]}
+Induction on k:
+\begin{enumerate}
+    \item \textbf{Basis step.} for k=2 $\theta_1x_1+\theta_2x_2\in C$ where $x_1,x_2\in C$ and $\theta_1, \theta_2\geq0$ and $\theta_1+\theta_2=1$.
+    \item \textbf{Inductive hypothesis.} assume that it holds also for $k-1$, \emph{i.e.}, $\theta_1x_1+\dots+\theta_{k-1}x_{k-1}\in C$ where $x_1,\dots,x_{k-1}\in C$ and $\theta_1, \dots, \theta_{k-1}\geq0$ and $\theta_1+\dots+\theta_{k-1}=1$.
+    \item \textbf{Inductive step.} Let $x_1,\dots,x_{k}\in C$ and $\theta_1, \dots, \theta_{k}\geq0$ and $\theta_1+\dots+\theta_{k}=1$, and also w.l.o.g. suppose that $\theta_k\neq1$ (There must exists at least one $\theta_i\neq1 \;\; i\in\{1,\dots, k\}$):
+    \begin{align*}
+        \theta_1x_1+\dots+\theta_{k-1}x_{k-1} + \theta_kx_k
+        &=(1-\theta_k)(\underbrace{\frac{\theta_1}{1-\theta_k}x_1+\dots+\frac{\theta_{k-1}}{1-\theta_k}x_{k-1}}_{:=x^{*}\in C \text{ (\textbf{inductive hypothesis})}} )+\theta_kx_k\\
+        &=\underbrace{(1-\theta_k)x^{*}+\theta_kx_k}_{\in C \text{ (\textbf{basis step})}}
+    \end{align*}
+    where the second equality follows from the \textbf{inductive hypothesis} and the third follows from \textbf{basis step}.
+\end{enumerate}
+Therefore for any $k$, $\theta_1x_1+\dots+\theta_kx_k\in C$, given $x_1,\dots,x_{k}\in C$ and $\theta_1, \dots, \theta_{k}\geq0$ and $\theta_1+\dots+\theta_{k}=1$.\\
+% \hrule
+\clearpage
+
+\subsection*{Problem 4 \small[BV 2.2]} 
+\begin{enumerate}[(a)]
+    \item
+        \begin{itemize}[label={}]
+            \item {\color{cyan}\fbox{$\Rightarrow$}}
+            \underline{$C\cap L$ is convex for any line $L$ $\Rightarrow$ $C$ is convex}\\\\
+            Let distinct points $x,y\in C$ and let the line $L$ pass through points $x$ and $y$. Since $C\cap L$ is convex then $\theta x + (1-\theta)y\in C\cap L\;\;\forall \theta\in[0,1]$ and as a result $\theta x + (1-\theta)y\in C\;\;\forall \theta\in[0,1]$.\\
+            
+            \item {\color{cyan}\fbox{$\Leftarrow$}} 
+            \underline{$C$ is convex $\Rightarrow$ $C\cap L$ is convex for any line $L$ }\\\\
+            Any line $L$ is a convex set by definition. Intersection of any two convex sets is a convex set ($\spadesuit$). Since $C$ is convex, $C\cap L$ will be a convex set.
+        \end{itemize}
+    {\centering \rule{0.4\textwidth}{0.4pt}\par}    
+    \item
+        \begin{itemize}[label={}]
+            \item {\color{cyan}\fbox{$\Rightarrow$}} 
+            \underline{set $A\cap L$ is affine for any line $L$ $\Rightarrow$ set $A$ is affine}\\\\
+            Let distinct points $x,y\in A$ and let the line $L$ pass through points $x$ and $y$. Since $A\cap L$ is affine then $\theta x + (1-\theta)y\in A\cap L\;\;\forall \theta\in\R$ and as a result $\theta x + (1-\theta)y\in A\;\;\forall \theta\in\R$.\\
+            
+            \item {\color{cyan}\fbox{$\Leftarrow$}} 
+            \underline{set $A$ is affine $\Rightarrow$ $A\cap L$ is affine for any line $L$ }\\\\
+            Any line $L$ is an affine set by definition. Intersection of any two affine sets is an affine set ($\clubsuit$). Since $A$ is affine, $A\cap L$ will be an affine set.
+            
+        \end{itemize}
+\end{enumerate}
+\hrule
+\textbf{\\Remark ($\spadesuit$)} 
+{\color{violet}Intersection of two convex sets is a convex set.}\\
+\textbf{proof.} Suppose $C_1$ and $C_2$ be two convex sets. Let $x,y\in C_1\cap C_2$. Since $x,y\in C_1$, by convexity of $C_1$ we have $\theta x + (1-\theta)y\in C_1\;\;\forall \theta\in[0,1]$. Also, since $x,y\in C_2$, by convexity of $C_2$ we have $\lambda x + (1-\lambda)y\in C_2\;\;\forall \lambda\in[0,1]$. As a result, $\gamma x + (1-\gamma)y\in C_1\cap C_2\;\;\forall \gamma\in[0,1]$. Therefore $C_1\cap C_2$ is convex.\\\\
+\textbf{Remark ($\clubsuit$)} 
+{\color{violet}Intersection of two affine sets is an affine set.}\\
+\textbf{proof.} Same as proof above, except for affine sets.
+
+\end{document}
