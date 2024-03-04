@@ -1,0 +1,199 @@
+\documentclass[12pt, letterpaper, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum} % For placeholder text, you can remove this in your actual document.
+
+\usepackage[headings]{fullpage} % Set margins and place page numbers at bottom center
+\usepackage[shortlabels]{enumitem} % Use a. in the enumerate
+\usepackage{amsmath} % aligned equations
+\usepackage{graphicx} % include figure
+\usepackage{float} % usage of H for figure float
+\usepackage{amssymb} % \blacksqure
+\usepackage{xhfill} % fill horizontal line
+\usepackage{sectsty} % section coloring
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\onehalfspacing
+\subsectionfont{\color{blue}}  % sets colour of sections
+
+\pagestyle{fancy}
+\fancyhf{} % Clear header and footer fields
+\renewcommand{\headrulewidth}{2pt} % Horizontal line under the header
+\setlength{\headheight}{18pt}
+
+\fancyhead[L]{\large Convex Optimization \scriptsize Spring 2024}
+\fancyhead[C]{HW\#4}
+\fancyhead[R]{\large Ali Zafari - 233001580} % Page number on the right side
+\fancyfoot[R]{\thepage}
+
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\Real}{\mathcal{Re}}
+\newcommand{\poly}{\mathcal{P}}
+\newcommand{\mat}{\mathcal{M}}
+\renewcommand{\L}{L}
+\newcommand{\U}{U}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\Hom}{\mathcal{L}}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\Range}{range}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\restr}[1]{|_{#1}}
+\renewcommand{\inf}{\mathop{\mathrm{inf}\vphantom{\mathrm{sup}}}}
+
+\begin{document}
+
+\subsection*{Problem 1 \small[BV 9.3]}
+\begin{enumerate}[(a)]
+    \item $p^*=1$ which is attained at $x^*\notin\text{dom}f$, where $x^*=(1,0)$.
+
+    \item The sublevel set $S$ is not a closed set, and $f$ cannot be strongly convex on $S$.
+
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.5\linewidth]{figs/hw4/hw4_p1.jpg}
+        \caption{Sublevel set $S=\{x\in\text{dom}f|f(x)\leq f(2,2)\}.$}
+        \label{fig:slopes}
+    \end{figure}
+
+    \item No convergence is guaranteed in this case, since for a function $f$ with open domain, we assume $f$ is infinite on the boundary and outside the open domain, therefore the condition $f(x+t\Delta x)>f(x)+\alpha t\nabla f(x)^T\Delta x$ is always true as the algorithms reaches the boundary and the step size $t$ infinitely many times gets updated by $\beta t$. And since $\beta\in(0,1)$, the step size will reach to zero and the algorithm stops.
+\end{enumerate}
+\hrule
+
+
+\subsection*{Problem 2 \small[BV 9.5]}
+For this strong convex $f$ we have:
+\begin{align*}
+    f(x+t\Delta x)\leq f(x) + \nabla f(x)^T(t\Delta x)+\frac{M}{2}\|t\Delta x\|_2^2
+\end{align*}
+By combining this inequality with the stopping condition of backtracking, i.e., $f(x+t\Delta x)<f(x)+\alpha t\nabla f(x)^T\Delta x$, we must have this condition to stop:
+\begin{align*}
+   f(x)+\nabla f(x)^T(t\Delta x)+\frac{M}{2}\|t\Delta x\|_2^2 \leq f(x)+ \alpha t\nabla f(x)^T\Delta x\\
+    t[(1-\alpha)f(x)^T\Delta x+t\frac{M}{2}\|\Delta x\|_2^2]\leq0\\
+    t\leq\frac{-(1-\alpha)f(x)^T\Delta x}{\frac{M}{2}\|\Delta x\|_2^2}\leq -\frac{f(x)^T\Delta x}{M\|\Delta x\|_2^2}
+\end{align*}
+where the last inequality holds since $\alpha\in(0,0.5)$.
+To find an upperbound on the number of backtracking iterations, starting from $t=1$ and reaching $\beta^n$ after $n$ iterations. We look for the $n$ which makes the backtracking to stop, in other words, which makes the step size greater than the value we derived in previous part:
+\begin{align*}
+    \beta^n\geq-\frac{f(x)^T\Delta x}{M\|\Delta x\|_2^2}\rightarrow n\leq\frac{\log(-\frac{f(x)^T\Delta x}{M\|\Delta x\|_2^2})}{\log\beta}
+\end{align*}
+where the last inequality holds since $\beta\in(0,1)$.
+\hrule
+
+
+\subsection*{Problem 3 \small[BV 9.6]}
+First deriving the analytical solution to exact line search gradient descent:
+\begin{align*}
+    t&=\arg\min_{s>0} f(x-s\nabla f(x))\\
+    &=\arg\min_{s>0} f(x-s\left[
+             \begin{array}{c}
+                  x_1\\
+                  \gamma x_2
+             \end{array}
+             \right])\\
+    &=\arg\min_{s>0} f(\left[
+             \begin{array}{c}
+                  x_1(1-s)\\
+                  x_2(1-\gamma s)
+             \end{array}
+             \right])\\
+    &=\arg\min_{s>0} \frac{1}{2}(x_1^2(1-s)^2+\gamma x_2^2(1-\gamma s)^2)
+\end{align*}
+Taking the derivative of this scalar function and setting it to zero, results in:
+\begin{align*}
+    t(x_1, x_2) =\frac{x_1^2+\gamma^2x_2^2}{x_1^2+\gamma^3x_2^2}=\frac{(\frac{x_1}{x_2})^2+\gamma^2}{(\frac{x_1}{x_2})^2+\gamma^3},
+\end{align*}
+where $t$ is only a function of $\frac{x_1}{x_2}$.
+
+With this step size, if we let $x^{(0)}=(\gamma, 1)^T$ using the update rule of gradient descent we have:
+\begin{align*}
+    x_1^{(k+1)} &= x_1^{(k)}-tx_1^{(k)}=(1-t)x_1^{(k)}=\frac{\gamma^2(\gamma-1)}{\gamma^3+(x_1^{(k)}/x_2^{(k)})^2}x_1^{(k)},\\
+    x_2^{(k+1)} &= x_2^{(k)}-t\gamma x_2^{(k)}=(1-t\gamma)x_2^{(k)}=\frac{-(x_1^{(k)}/x_2^{(k)})^2(\gamma-1)}{\gamma^3+(x_1^{(k)}/x_2^{(k)})^2}x_2^{(k)}
+\end{align*}
+Therefore evaluating these sequences for a couple of $k$:
+\begin{align*}
+    x_1^{(1)} &=\frac{\gamma^2(\gamma-1)}{\gamma^3+(\gamma)^2}\gamma=\frac{\gamma-1}{\gamma+1}\gamma,\\
+    x_2^{(1)} &= \frac{-(\gamma)^2(\gamma-1)}{\gamma^3+(\gamma)^2}1=\frac{-(\gamma-1)}{\gamma+1}1,
+\end{align*}
+and
+\begin{align*}
+    x_1^{(2)} &=\frac{\gamma^2(\gamma-1)}{\gamma^3+(-\gamma)^2}x_1^{(1)}=\frac{\gamma-1}{\gamma+1}x_1^{(1)}=(\frac{\gamma-1}{\gamma+1})^2\gamma,\\
+    x_2^{(2)} &= \frac{-(-\gamma)^2(\gamma-1)}{\gamma^3+(-\gamma)^2}x_2^{(1)}=\frac{-(\gamma-1)}{\gamma+1}x_2^{(1)}=(\frac{-(\gamma-1)}{\gamma+1})^2,
+\end{align*}
+This geometric sequence continues with scaling as $k$ grows,
+and all the updates are just scaled version of previous values, by induction we have:
+\begin{align*}
+    x_1^{(k)}&=(1-t)^{k}x_1^{(0)}\\
+    &=\left(\frac{\gamma-1}{\gamma+1}\right)^k\gamma
+\end{align*}
+Exactly same reasoning for the second coordinate will result in update terms of:
+\begin{align*}
+    x_2^{(k)}&=(1-t\gamma )^{k}x_2^{(0)}\\
+    &=\left(-\frac{\gamma-1}{\gamma+1}\right)^k1
+\end{align*}
+\hrule
+% \clearpage
+
+
+\subsection*{Problem 4 \small[Numerical Problem]}
+The figures below are showing the results of the implemented algorithms, further details and Python implementation can be found in the {\color{teal} \textbf{attached  Jupyter notebook}}.
+
+\begin{figure}[h]
+     \centering
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figs/hw4/f1_rate.png}
+         \caption{Convergence rate of the gradient descent.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figs/hw4/f1_contour_exact.png}
+         \caption{Exact line search steps on contour plot.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figs/hw4/f1_contour_back.png}
+         \caption{Backtracking line search steps on contour plot.}
+     \end{subfigure}
+        \caption{Gradient descent on $f_1(x_1,x_2)=\frac{1}{2}(x_1^2+\gamma x_2^2)$ with $\gamma=10$.}
+\end{figure}
+
+\begin{figure}[h]
+     \centering
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figs/hw4/f2_rate.png}
+         \caption{Convergence rate of the gradient descent.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figs/hw4/f2_contour_exact.png}
+         \caption{Exact line search steps on contour plot.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figs/hw4/f2_contour_back.png}
+         \caption{Backtracking line search steps on contour plot.}
+     \end{subfigure}
+        \caption{Gradient descent on $f_2(x_1,x_2)=e^{x_1+3x_2-0.1}+e^{x_1-3x_2-0.1}+e^{-x_1-0.1}$.}
+\end{figure}
+
+\end{document}
+ 
