@@ -1,0 +1,216 @@
+\documentclass[12pt, letterpaper, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum} % For placeholder text, you can remove this in your actual document.
+
+\usepackage[headings]{fullpage} % Set margins and place page numbers at bottom center
+\usepackage[shortlabels]{enumitem} % Use a. in the enumerate
+\usepackage{amsmath} % aligned equations
+\usepackage{graphicx} % include figure
+\usepackage{float} % usage of H for figure float
+\usepackage{amssymb} % \blacksqure
+\usepackage{xhfill} % fill horizontal line
+\usepackage{sectsty} % section coloring
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{bbm}
+
+\onehalfspacing
+\subsectionfont{\color{blue}}  % sets colour of sections
+
+\pagestyle{fancy}
+\fancyhf{} % Clear header and footer fields
+\renewcommand{\headrulewidth}{2pt} % Horizontal line under the header
+\setlength{\headheight}{18pt}
+
+\fancyhead[L]{\large Convex Optimization \scriptsize Spring 2024}
+\fancyhead[C]{HW\#3}
+\fancyhead[R]{\large Ali Zafari - 233001580} % Page number on the right side
+\fancyfoot[R]{\thepage}
+
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\Real}{\mathcal{Re}}
+\newcommand{\poly}{\mathcal{P}}
+\newcommand{\mat}{\mathcal{M}}
+\renewcommand{\L}{L}
+\newcommand{\U}{U}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\Hom}{\mathcal{L}}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\Range}{range}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\restr}[1]{|_{#1}}
+\renewcommand{\inf}{\mathop{\mathrm{inf}\vphantom{\mathrm{sup}}}}
+
+\begin{document}
+
+\subsection*{Problem 1 \small[BV 3.1]}
+\begin{enumerate}[(a)]
+    \item 
+    Let $\theta=\frac{b-x}{b-a}$, using convexity of $f$:
+    \begin{align*}
+    f(\theta a + (1-\theta) b)&\leq\theta f(a)+(1-\theta)f(b)\\
+    f(\frac{b-x}{b-a}a+\frac{x-a}{b-a}b)&\leq\frac{b-x}{b-a}f(a)+\frac{x-a}{b-a}f(b)\\
+    f(x)&\leq\frac{b-x}{b-a}f(a)+\frac{x-a}{b-a}f(b)
+    \end{align*}
+
+    \item LHS inequality can be derived by subtracting $f(a)$ from inequality of part (a):
+    \begin{align*}
+        f(x)-f(a)&\leq\frac{b-x}{b-a}f(a)-f(a)+\frac{x-a}{b-a}f(b)\\
+        f(x)-f(a)&\leq\frac{a-x}{b-a}f(a)+\frac{x-a}{b-a}f(b)\\
+        f(x)-f(a)&\leq\frac{x-a}{b-a}(f(b)-f(a))\\
+        \frac{f(x)-f(a)}{x-a}&\leq\frac{f(b)-f(a)}{b-a}
+    \end{align*}
+    RHS inequality can be derived by adding $f(b)$ to the negative of inequality of part (a):
+    \begin{align*}
+        \frac{x-b}{b-a}f(a)+\frac{a-x}{b-a}f(b)+f(b)&\leq f(b)-f(x)\\
+        \frac{x-b}{b-a}f(a)+\frac{b-x}{b-a}f(b)&\leq f(b)-f(x)\\
+        \frac{b-x}{b-a}(f(b)-f(a))&\leq f(b)-f(x)\\
+        \frac{f(b)-f(a)}{b-a}&\leq \frac{f(b)-f(x)}{b-x}
+    \end{align*}
+    Therefore, we have shown that:
+    \begin{align*}
+        \frac{f(x)-f(a)}{x-a}\leq\frac{f(b)-f(a)}{b-a}\leq\frac{f(b)-f(x)}{b-x}
+    \end{align*}
+    
+    And it can be seen in the figure below as the slop of each line segment is shown:
+    
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.5\linewidth]{figs/hw3_p1.jpg}
+        \caption{Slope of line segments on the convex function.}
+        \label{fig:slopes}
+    \end{figure}
+    
+    \item Taking limit for $x\rightarrow a$ on both sides of LHS inequality of part (b):
+    \begin{align*}
+        \lim_{x\rightarrow a}\frac{f(x)-f(a)}{x-a}&\leq\lim_{x\rightarrow a}\frac{f(b)-f(a)}{b-a}\\
+        f'(a)&\leq\frac{f(b)-f(a)}{b-a}
+    \end{align*}
+    Taking limit for $x\rightarrow b$ on both sides of RHS inequality of part (b):
+    \begin{align*}
+        \lim_{x\rightarrow b}\frac{f(b)-f(a)}{b-a}&\leq\lim_{x\rightarrow b}\frac{f(b)-f(x)}{b-x}\\
+        \frac{f(b)-f(a)}{b-a}&\leq f'(b)
+    \end{align*}
+    Therefore, we have shown that:
+    \begin{align*}
+        f'(a)\leq\frac{f(b)-f(a)}{b-a}\leq f'(b)
+    \end{align*}
+
+    \item Using the inequality of part (c):
+    \begin{align*}
+        f'(b)-f'(a)&\geq0\\
+        \frac{f'(b)-f'(a)}{b-a}&\geq0\\
+        \lim_{b\rightarrow a}\frac{f'(b)-f'(a)}{b-a}&\geq\lim_{b\rightarrow a}0\\
+        f''(a)&\geq0
+    \end{align*}
+\end{enumerate}
+\hrule
+
+
+\subsection*{Problem 2 \small[BV 3.4]}
+$f:\R^n\rightarrow\R$ continuous
+\begin{itemize}[label={}]
+    \item {\color{cyan}\fbox{$\Rightarrow$}} 
+    \underline{$f$ is convex $\Rightarrow$ $\int_0^1f(\lambda y +(1-\lambda)x)d\lambda\leq\frac{f(x)+f(y)}{2}$}\\\\
+    Since $f$ is convex:
+    \begin{align*}
+        f(\lambda y +(1-\lambda)x)&\leq \lambda f(y) + (1-\lambda) f(x)\\
+        \int_0^1f(\lambda y +(1-\lambda)x)d\lambda&\leq \int_0^1(\lambda f(y) + (1-\lambda) f(x))d\lambda\\
+        \int_0^1f(\lambda y +(1-\lambda)x)d\lambda&\leq \frac{1}{2} f(y) + \frac{1}{2} f(x)
+    \end{align*}
+    
+    \item {\color{cyan}\fbox{$\Leftarrow$}} 
+    \underline{$\int_0^1f(\lambda y +(1-\lambda)x)d\lambda\leq\frac{f(x)+f(y)}{2}$ $\Rightarrow$ $f$ is convex}\\\\
+    (proof by contradiction) Suppose f is not convex, then $\exists\; x,y\in\R^n$ and $\theta_0\in(0,1)$ such that 
+    \begin{align*}
+        f(\theta_0 x + (1-\theta_0) y)>\theta_0 f(x) + (1-\theta_0) f(y)
+    \end{align*}
+    Let continuous function $F(\theta)$ be defined as
+    \begin{align*}
+        F(\theta)=f(\theta x + (1-\theta) y)-\theta f(x)-(1-\theta) f(y)
+    \end{align*}
+    where $F(0)=F(1)=0$ and $F(\theta_0)>0$. Let $a$ and $b$ denote the nearest zero-crossings of $F$ around $\theta_0$, then $F(a)=0$ and $F(b)=0$ and $F(\theta')>0$ for all $\theta'\in(a,b)$. As a result, $F$ is strictly positive over the line segment between $ax+(1-a)y:=x'$ and $bx+(1-b)y:=y'$. Therefore $F(\gamma x' + (1-\gamma)y')>0$ for all $\gamma\in(0,1)$, which means that $f(\theta_0 x + (1-\theta_0) y)$.\\
+    As $\gamma x' + (1-\gamma)y'=\gamma(ax+(1-a)y)+(1-\gamma)(bx+(1-b)y)=(\gamma a+b-\gamma b)x+(1-\gamma a+\gamma b -b)y$ indicates a line segment between $x$ and $y$, with change of notation we have:
+    \begin{align*}
+        \int_0^1f(\zeta x+(1-\zeta)y)d\zeta>\int_0^1(\zeta f(x)+(1-\zeta)f(y))d\zeta=\frac{f(x)+f(y)}{2}
+    \end{align*}
+    which is a contradiction with the hypothesis.
+\end{itemize}
+\hrule
+
+
+\subsection*{Problem 3 \small[BV 3.7]}
+(proof by contradiction) Suppose $f$ is not constant, then $\exists\; x,y\in\R^n$ such that $f(x)<f(y)$, and let the function $g$ be defined as $g(t)=f(x+\theta(y-x))$, which is convex. We also have $g(0)<g(1)$. For all $t>1$:
+\begin{align*}
+    g(1)\leq\frac{t-1}{t}g(0)+\frac{1}{t}g(t)
+\end{align*}
+Then 
+\begin{align*}
+    g(t)\geq tg(1)-(t-1)g(0)=g(0)+t(g(1)-g(0)),
+\end{align*}
+as $t\rightarrow\infty$, $g\rightarrow\infty$, meaning that $f$ is unbounded. This is a contradiction with our hypothesis.\\
+\hrule
+
+
+\subsection*{Problem 4 \small[BV 9.1]} 
+\begin{enumerate}[(a)]
+    \item $f$ is twice differentiable, its hessian is equal to $\nabla^2f(x)=P$. Since $P\nsucceq0$ then $f$ is not convex by definition. On the other hand, since symmetric matrix is not positive semi-definite, then $\exists\; v\in\R^n$ such that $v^TPv<0$, then:
+    \begin{align*}
+        \lim_{a\rightarrow \infty}f(av)=\lim_{a\rightarrow \infty}\frac{1}{2}a^2v^TPv+q^Tv+r=-\infty
+    \end{align*}
+    therefore, $f$ is unbounded below in this case.
+
+    \item Since $P$ is positive semi-definite and $P$ is rank deficient, then $\dim\Null P>0$. Therefore $\exists\; u\in\R^n$ such that $Pu=0$, and also obviously $q^Tu\neq0$, then:
+    \begin{align*}
+        f(au)=\frac{1}{2}a^2u^TPu+q^Tu+r=aq^Tu+r
+    \end{align*}
+    therefore, depending on the sign of $q^Tu$, $f$ is unbounded below either $a\rightarrow\infty$ or $a\rightarrow-\infty$.
+\end{enumerate}
+\hrule
+
+
+\subsection*{Problem 5 \small[BV 9.2]} 
+\begin{enumerate}[(a)]
+    \item Since $\mathrm{dom}f$ is an open set, if $f(x)$ on the $\mathrm{bd}\;\mathrm{dom}f$ goes to infinity, then $f$ is closed. The numerator $\|Ax-b\|_2^2$ is lower bounded by some value greater than zero, since $b\notin\Range A$.\\On the other hand, boundary of $\mathrm{dom}f$ is designated by equation $c^Tx+d=0$, which makes the denominator of $f$ to go to zero.\\
+    Therefore value of $f(x)$, as $x$ approaches the boundary of the $\mathrm{dom}f$, goes to infinity. Hence $f$ is closed.
+
+    \item To have $\left.\nabla f(x)\right\vert_{x^\star}=0$:
+    \begin{align*}
+        \nabla f(x)
+        &=\frac{2A^T(Ax-b)(c^Tx-d)-\|Ax-b\|_2^2c}{(c^Tx-d)^2}\\
+        &=\frac{2}{c^Tx-d}(A^TAx-A^Tb)-\frac{\|Ax-b\|_2^2}{(c^Tx-d)^2}c=0
+    \end{align*}
+    having $A_{m\times n}$ full rank ($n<m$), multiplying both sides of equality from left, by $(A^TA)^{-1}$:
+    \begin{align*}
+        \frac{2}{c^Tx-d}(x-(A^TA)^{-1}A^Tb)-\frac{\|Ax-b\|_2^2}{(c^Tx-d)^2}(A^TA)^{-1}c=0\\
+        \frac{2}{c^Tx-d}(x-x_1)-\frac{\|Ax-b\|_2^2}{(c^Tx-d)^2}x_2=0\\
+        \frac{2}{c^Tx-d}(x-x_1)=\frac{\|Ax-b\|_2^2}{(c^Tx-d)^2}x_2\\
+        x-x_1=\frac{1}{2}\frac{\|Ax-b\|_2^2}{c^Tx-d}x_2\\
+        x=x_1+\frac{1}{2}\frac{\|Ax-b\|_2^2}{c^Tx-d}x_2
+    \end{align*}
+    therefore by definition of $x=x_1+tx_2$, we have $t=\frac{1}{2}\frac{\|Ax-b\|_2^2}{c^Tx-d}$:
+    \begin{align*}
+        t&=\frac{1}{2}\frac{\|Ax-b\|_2^2}{c^Tx-d}\\
+        &=\frac{1}{2}\frac{\|A(x_1+tx_2)-b\|_2^2}{c^T(x_1+tx_2)-d}\\
+        &=\frac{1}{2}\frac{\|Ax_1-b+tAx_2\|_2^2}{c^Tx_1+tc^Tx_2-d}
+    \end{align*}
+    The last equation can be written as:
+    \begin{align*}
+        (c^Tx_2)t^2+(2c^Tx_1-d)t-\|Ax_1-b\|_2^2=0
+    \end{align*}
+    therefore, $t$ can be calculated by solving the quadratic equation above while satisfying $c^T(x_1+tx_2)>0$ to have $x^\star\in\mathrm{dom}f$.
+\end{enumerate}
+
+\end{document}
+ 

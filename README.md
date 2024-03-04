@@ -15,3 +15,4 @@ Instructor: [Waheed U. Bajwa](https://www.ece.rutgers.edu/Bajwa)
 | :---:|:---:|:---:|
 | HW #01 | [link](./homeworks/HW1_p.md) | [PDF](./homeworks/HW1.pdf) |
 | HW #02 | [link](./homeworks/HW2_p.md) | [PDF](./homeworks/HW2.pdf) |
+| HW #03 | [link](./homeworks/HW3_p.md) | [PDF](./homeworks/HW3.pdf) |
