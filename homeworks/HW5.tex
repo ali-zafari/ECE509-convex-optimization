@@ -1,0 +1,175 @@
+\documentclass[12pt, letterpaper, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum} % For placeholder text, you can remove this in your actual document.
+
+\usepackage[headings]{fullpage} % Set margins and place page numbers at bottom center
+\usepackage[shortlabels]{enumitem} % Use a. in the enumerate
+\usepackage{amsmath} % aligned equations
+\usepackage{graphicx} % include figure
+\usepackage{float} % usage of H for figure float
+\usepackage{amssymb} % \blacksqure
+\usepackage{xhfill} % fill horizontal line
+\usepackage{sectsty} % section coloring
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\onehalfspacing
+\subsectionfont{\color{blue}}  % sets colour of sections
+
+\pagestyle{fancy}
+\fancyhf{} % Clear header and footer fields
+\renewcommand{\headrulewidth}{2pt} % Horizontal line under the header
+\setlength{\headheight}{18pt}
+
+\fancyhead[L]{\large Convex Optimization \scriptsize Spring 2024}
+\fancyhead[C]{HW\#5}
+\fancyhead[R]{\large Ali Zafari - 233001580} % Page number on the right side
+\fancyfoot[R]{\thepage}
+
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\Real}{\mathcal{Re}}
+\newcommand{\poly}{\mathcal{P}}
+\newcommand{\mat}{\mathcal{M}}
+\renewcommand{\L}{L}
+\newcommand{\U}{U}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\Hom}{\mathcal{L}}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\Range}{range}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\restr}[1]{|_{#1}}
+\renewcommand{\inf}{\mathop{\mathrm{inf}\vphantom{\mathrm{sup}}}}
+
+\begin{document}
+
+\subsection*{Problem 1 \small[BV 9.8]}
+By definition we have:
+\begin{align*}
+    \Delta x_{nsd} &= \arg\min\{\nabla f(x)^Tv\;\;|\;\;\|v\|_\infty\leq1\}\\
+    &=\arg\min\{\nabla f(x)^Tv\;\;|\;\;\max\{|v_1|,\dots,|v_n|\}\leq1\}\\
+    &=\arg\min\{\frac{\partial f}{\partial x_1}(x)v_1+\dots+\frac{\partial f}{\partial x_n}(x)v_n \;\;|\;\;\max\{|v_1|,\dots,|v_n|\}\leq1\}
+\end{align*}
+since each $-1\leq v_i \leq 1$, if we choose $v_i=-\frac{\frac{\partial f}{\partial x_i}(x)}{|\frac{\partial f}{\partial x_i}(x)|}$ when $\frac{\partial f}{\partial x_i}(x)\neq0$ and $v_i=0$ otherwise, the objective function will be minimized. In other words, $v_i$ is always the negative of the sign of the i$^{th}$ element of the gradient.
+
+On the other hand, since the dual of $l_\infty$-norm is $l_1$-norm, we have:
+\begin{align*}
+    \Delta x_{sd} &= \|\nabla f(x)\|_1 \Delta x_{nsd}\\
+    &= \left(\sum_{i=1}^n|\frac{\partial f}{\partial x_i}(x)|\right)\Delta x_{nsd}
+\end{align*}
+where elements of $\Delta x_{nsd}$ are in $\{-1, 0, 1\}$. This choice of steepest direction always points to a direction negative of the direction (sign) of gradient on each coordinate, unless the gradient is zero in that coordinate.\\
+\hrule
+
+
+\subsection*{Problem 2 \small[BV 9.10]}
+\begin{enumerate}[(a)]
+    \item 
+        \begin{align*}
+            f(x) &= \log(e^x+e^{-x})\\
+            f'(x) &= \frac{e^x-e^{-x}}{e^x+e^{-x}}\\
+            f''(x) &= \frac{4}{(e^x+e^{-x})^2}\\
+            x^+&=x-\frac{1}{f''(x)} f'(x)
+        \end{align*}
+    The Newton's updates with different initial points are reported below, it shows that in this case of fixed step size, a small deviation in the initial point could lead to non-convergence of the algorithm:
+    
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{c|l|l|l|l|l|l}
+     iteration $(k)$& 0 & 1 & 2 & 3 & 4 & 5  \\\hline
+     $x^{(k)}$& 1 & -0.8134 & 0.4094 & -0.0473 & 7.0602$\times10^{-5}$ & -2.3470$\times10^{-13}$ \\
+     \hline
+     $f(x^{(k)})$& 1 & 0.9928 & 0.7747 & 0.6942 & 0.6931 & 0.6931
+    \end{tabular}
+    \end{table}
+
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{c|l|l|l|l|l|l}
+     iteration $(k)$& 0 & 1 & 2 & 3 & 4 & 5  \\\hline
+     $x^{(k)}$& 1.1 & -1.1285 & 1.2341 & -1.6951 & 5.7153 & -23021.3564 \\
+     \hline
+     $f(x^{(k)})$& 1.00468 & 1.2280 & 1.3154 & 1.7283 & 5.7153 & 23021.3564
+    \end{tabular}
+    \end{table}
+    
+    \item
+        \begin{align*}
+            f(x) &= -\log x + x\\
+            f'(x) &= -\frac{1}{x} + 1\\
+            f''(x) &= \frac{1}{x^2}
+            \\
+            x^+&=x-\frac{1}{f''(x)} f'(x)
+        \end{align*}
+    In this case after a single iteration, the Newton's update get outside of the domain of function.
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{c|l|l|l|l|l|l}
+     iteration $(k)$& 0 & 1 & 2 & 3 & 4 & 5  \\\hline
+     $x^{(k)}$& 3 & -3 & - & - & - & - \\
+     \hline
+     $f(x^{(k)})$& 1.9013 & not defined & - & - & - & -
+    \end{tabular}
+    \end{table}
+    
+\end{enumerate}
+\hrule
+
+
+\subsection*{Problem 3 \small[BV 9.11]}
+\begin{enumerate}
+    \item Gradient Method.
+    \begin{align*}
+        \nabla g(x) = \phi'(f(x)) \nabla f(x)
+    \end{align*}
+    Since $\phi$ is increasing ($\phi'(f(x))\geq0$), then the gradient of $g$ is always in the same direction as the gradient of $f$. Therefore both of them will have the same search direction and when the exact line search is used, minimizing both of the will have the same iterations.
+    
+    \item Newton Method.
+    \begin{align*}
+        &\nabla^2g(x)^{-1}\nabla g(x)\\
+        &= [\phi''\nabla f(x)\nabla f(x)^T+\phi'\nabla^2 f(x)]^{-1}\nabla g(x)\\
+        &=\left[\frac{1}{\phi'}\nabla^2 f^{-1}-\frac{1}{\phi'}\nabla^2 f^{-1}\phi''\nabla f(I+\frac{1}{\phi'}\nabla f^T\nabla^2 f^{-1}\phi''\nabla f)^{-1}\nabla f^T\frac{1}{\phi'}\nabla^2 f^{-1}\right]\nabla g(x)\\
+        &=\left[\frac{1}{\phi'}\nabla^2 f^{-1}-\frac{1}{\phi'}\nabla^2 f^{-1}\phi''\nabla f(I+\frac{\phi''}{\phi'}p)^{-1}\nabla f^T\frac{1}{\phi'}\nabla^2 f^{-1}\right]\nabla g(x)\\
+        &=\left[\frac{1}{\phi'}\nabla^2 f^{-1}-\frac{\phi''}{\phi'(\phi'+p\phi'')}\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}\right]\phi'\nabla f\\
+        &=\nabla^2 f^{-1}\left[I-\frac{\phi''}{\phi'+p\phi''}\nabla f\nabla f^T\nabla^2 f^{-1}\right]\nabla f\\
+        &=\nabla^2 f^{-1}\left[\nabla f-\frac{\phi''}{\phi'+p\phi''}\nabla f\nabla f^T\nabla^2 f^{-1}\nabla f\right]\\
+        &=\nabla^2 f^{-1}\nabla f\left[I-\frac{\phi''}{\phi'+p\phi''}\nabla f^T\nabla^2 f^{-1}\nabla f\right]\\
+        &=\nabla^2 f^{-1}\nabla f\left[I-\frac{\phi''}{(\phi'+p\phi'')}p\right]\\
+        &=\nabla^2 f^{-1}\nabla f\left[\frac{\phi'}{\phi'+p\phi''}\right]\
+    \end{align*}
+    % \begin{align*}
+    %     &\nabla^2g(x)^{-1}\nabla g(x)\\
+    %     &= [\phi''\nabla f(x)\nabla f(x)^T+\phi'\nabla^2 f(x)]^{-1}\nabla g(x)\\
+    %     &=\left[\frac{1}{\phi'}\nabla^2 f^{-1}-\frac{1}{\phi'}\nabla^2 f^{-1}\phi''\nabla f(I+\frac{1}{\phi'}\nabla f^T\nabla^2 f^{-1}\phi''\nabla f)^{-1}\nabla f^T\frac{1}{\phi'}\nabla^2 f^{-1}\right]\nabla g(x)\\
+    %     &=\left[\frac{1}{\phi'}\nabla^2 f^{-1}-\frac{\phi''}{\phi'^2}\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}-\frac{\phi''^2}{\phi'^3}\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}\right]\phi' \nabla f\\
+    %     &=\left[\nabla^2 f^{-1}-\frac{\phi''}{\phi'}\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}-\frac{\phi''^2}{\phi'^2}\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}\right] \nabla f\\
+    %     &=\nabla^2 f^{-1}\left[I-\frac{\phi''}{\phi'}\nabla f\nabla f^T\nabla^2 f^{-1}-\frac{\phi''^2}{\phi'^2}\nabla f\nabla f^T\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}\right] \nabla f\\
+    %     &=\nabla^2 f^{-1}\left[\nabla f-\frac{\phi''}{\phi'}\nabla f\nabla f^T\nabla^2 f^{-1}\nabla f-\frac{\phi''^2}{\phi'^2}\nabla f\nabla f^T\nabla^2 f^{-1}\nabla f\nabla f^T\nabla^2 f^{-1}\nabla f\right]\\
+    %     &=\nabla^2 f^{-1}\nabla f\left[I-\frac{\phi''}{\phi'}\nabla f^T\nabla^2 f^{-1}\nabla f-(\frac{\phi''}{\phi'}\nabla f^T\nabla^2 f^{-1}\nabla f)^2\right]
+    % \end{align*}
+    where the second equality follows from Matrix Inversion Lemma (C.4.3) and $p:=\nabla f^T\nabla^2 f^{-1}\phi''\nabla f$ is a nonnegative scalar, as $f$ is a convex function. Since $\phi$ is increasing and convex, the coefficient $\frac{\phi'}{\phi'+p\phi''}$ is non-negative. Therefore both of $f$ and $g$ will have the same Newton search direction and when the exact line search is used, minimizing both of them will result in same iterations.
+\end{enumerate}
+\hrule
+
+
+% \subsection*{Problem 4 \small[BV 9.30]}
+% \hrule
+
+
+% \subsection*{Problem 5 \small[BV 9.31]}
+% \hrule
+
+\end{document}
+ 

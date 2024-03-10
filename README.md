@@ -17,3 +17,4 @@ Instructor: [Waheed U. Bajwa](https://www.ece.rutgers.edu/Bajwa)
 | HW #02 | [link](./homeworks/HW2_p.md) | [PDF](./homeworks/HW2.pdf) |
 | HW #03 | [link](./homeworks/HW3_p.md) | [PDF](./homeworks/HW3.pdf) |
 | HW #04 | [link](./homeworks/HW4_p.md) | [PDF](./homeworks/HW4.pdf) , [Jupyter Notebook](./homeworks/HW4_notebook.ipynb) |
+| HW #05 | [link](./homeworks/HW5_p.md) | [PDF](./homeworks/HW5.pdf) , [Jupyter Notebook](./homeworks/HW5_notebook.ipynb) |
