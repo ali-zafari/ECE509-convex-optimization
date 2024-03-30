@@ -1,0 +1,104 @@
+\documentclass[12pt, letterpaper, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum} % For placeholder text, you can remove this in your actual document.
+
+\usepackage[headings]{fullpage} % Set margins and place page numbers at bottom center
+\usepackage[shortlabels]{enumitem} % Use a. in the enumerate
+\usepackage{amsmath} % aligned equations
+\usepackage{graphicx} % include figure
+\usepackage{float} % usage of H for figure float
+\usepackage{amssymb} % \blacksqure
+\usepackage{xhfill} % fill horizontal line
+\usepackage{sectsty} % section coloring
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\onehalfspacing
+\subsectionfont{\color{blue}}  % sets colour of sections
+
+\pagestyle{fancy}
+\fancyhf{} % Clear header and footer fields
+\renewcommand{\headrulewidth}{2pt} % Horizontal line under the header
+\setlength{\headheight}{18pt}
+
+\fancyhead[L]{\large Convex Optimization \scriptsize Spring 2024}
+\fancyhead[C]{HW\#6}
+\fancyhead[R]{\large Ali Zafari - 233001580} % Page number on the right side
+\fancyfoot[R]{\thepage}
+
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\Real}{\mathcal{Re}}
+\newcommand{\poly}{\mathcal{P}}
+\newcommand{\mat}{\mathcal{M}}
+\renewcommand{\L}{L}
+\newcommand{\U}{U}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\Hom}{\mathcal{L}}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\Range}{range}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\restr}[1]{|_{#1}}
+\renewcommand{\inf}{\mathop{\mathrm{inf}\vphantom{\mathrm{sup}}}}
+
+\begin{document}
+
+\subsection*{Problem 1 \small[BV 9.23]}
+\begin{enumerate}[(a)]
+    \item 
+    \begin{align*}
+        g(t)=f(x+t\Delta x)
+        &=-\sum_{i=1}^m\log(b_i-a_i^Tx-ta_i^T\Delta x)\\
+        &=-\sum_{i=1}^m\log\left((b_i-a_i^Tx)(1-t\frac{a_i^T\Delta x}{b_i-a_i^Tx})\right)\\
+        &=-\sum_{i=1}^m\log(b_i-a_i^Tx) - \sum_{i=1}^m\log(1-t\frac{a_i^T\Delta x}{b_i-a_i^Tx})\\
+        &=c-\sum_{i=1}^m\log(1-td_i)
+    \end{align*}
+    where $c=-\sum_{i=1}^m\log(b_i-a_i^Tx)$ and $d_i=\frac{a_i^T\Delta x}{b_i-a_i^Tx}$.
+    \begin{align*}
+        g'(t)=\sum_{i=1}^m\frac{d_i}{1-td_i}
+    \end{align*}
+    Therefore, if $k$ values of $t$ are to be evaluated, the computation complexity of $f$ is of order $knm$ while with pre-computation it is $nm+km$. Also the the computation cost for $g'(t)$ is the same with or without the pre-computation is of order $nm+km$.
+    
+    \item
+    \begin{align*}
+        \Tilde{f}(t)=f(x+t\Delta x)
+        &=\log\left(\sum_{i=1}^me^{a_i^Tx+ta_i^T\Delta x+b_i}\right)\\
+        &=\log\left(\sum_{i=1}^me^{a_i^Tx+b_i}(e^{a_i^T\Delta x})^t\right)\\
+        &=\log\left(\sum_{i=1}^me^{k_i+th_i}\right)
+    \end{align*}
+    where $k_i=a_i^Tx+b_i$ and $h_i=a_i^T\Delta x$.
+    \begin{align*}
+        \Tilde{f}'(t)=\frac{\sum_{i=1}^mh_ie^{k_i+th_i}}{\sum_{i=1}^me^{k_i+th_i}}
+    \end{align*}
+    Therefore, if $k$ values of $t$ are to be evaluated, the computation complexity of $f$ is of order $kmn$ while with pre-computation it is of order $mn+km$. Also the the computation cost for $g'(t)$ is the same with or without the pre-computation, of order $mn+km$.
+    
+\end{enumerate}
+\hrule
+
+\subsection*{Problem 2 \small[BV-additional-exercises 9.10]}
+\begin{enumerate}[(a)]
+    \item False.
+    \item True.
+    \item False.
+    \item True.
+    \item False.
+    \item True.
+    \item False
+\end{enumerate}
+\hrule
+
+\end{document}
+ 
